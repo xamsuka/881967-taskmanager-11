@@ -1,12 +1,10 @@
-
-
-import {createMenuTemplate} from './components/site-menu';
-import {createBoardTemplate} from './components/site-board';
-import {createFilterTemplate} from './components/site-filter';
-import {createSortTemplate} from './components/site-sort';
-import {createFormEditTemplate} from './components/site-form-edit';
-import {createTaskTemplate} from './components/site-task';
-import {createButtonLoad} from './components/site-button-load';
+import {createMenuTemplate} from './components/create-menu-template';
+import {createBoardTemplate} from './components/create-board-template';
+import {createFilterTemplate} from './components/create-filter-template';
+import {createSortTemplate} from './components/create-sort-template';
+import {createFormEditTemplate} from './components/create-form-edit-template';
+import {createTaskTemplate} from './components/create-task-template';
+import {createButtonLoad} from './components/create-button-load';
 
 const MAX_TASK_VIEW = 3;
 const siteMainElement = document.querySelector(`main`);
