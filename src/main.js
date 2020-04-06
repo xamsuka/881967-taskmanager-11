@@ -1,10 +1,10 @@
-import {createMenuTemplate} from './components/create-menu-template';
-import {createBoardTemplate} from './components/create-board-template';
-import {createFilterTemplate} from './components/create-filter-template';
-import {createSortTemplate} from './components/create-sort-template';
-import {createFormEditTemplate} from './components/create-form-edit-template';
-import {createTaskTemplate} from './components/create-task-template';
-import {createButtonLoad} from './components/create-button-load';
+import {createMenuTemplate} from './components/menu';
+import {createBoardTemplate} from './components/board';
+import {createFilterTemplate} from './components/filters';
+import {createSortTemplate} from './components/sorting';
+import {createFormEditTemplate} from './components/form-edit';
+import {createTaskTemplate} from './components/task';
+import {createButtonLoad} from './components/button-load';
 
 const MAX_TASK_VIEW = 3;
 const siteMainElement = document.querySelector(`main`);
