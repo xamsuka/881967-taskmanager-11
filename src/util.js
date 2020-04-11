@@ -3,8 +3,8 @@ const getRandomValue = (min = 0, max = 100) => {
 };
 
 const formateTime = (date) => {
-  const hourse = date.getHours();
-  const minutes = date.getMinutes();
+  const hourse = String(date.getHours()).padStart(2, ``);
+  const minutes = String(date.getMinutes()).padStart(2, `0`);
   return `${hourse}:${minutes}`;
 };
 
