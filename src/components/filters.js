@@ -1,4 +1,4 @@
-import {generateFilters} from '../mock/filters';
+
 
 const createFiltersMarkup = (filter, isChecked) => {
   const {name, count} = filter;
@@ -10,8 +10,8 @@ const createFiltersMarkup = (filter, isChecked) => {
   `);
 };
 
-const createFilterTemplate = () => {
-  const filters = generateFilters();
+const createFilterTemplate = (filters) => {
+// const filters = generateFilters();
 
   // Код ниже -> Рабочий код, если потребуется в фильтре 'ALL' отобразить количество всех задач
   /*
