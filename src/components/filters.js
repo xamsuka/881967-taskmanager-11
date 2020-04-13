@@ -1,6 +1,6 @@
 
 
-const createFiltersMarkup = (filter, isChecked) => {
+const createFilterMarkup = (filter, isChecked) => {
   const {name, count} = filter;
 
   return (`
@@ -11,19 +11,7 @@ const createFiltersMarkup = (filter, isChecked) => {
 };
 
 const createFilterTemplate = (filters) => {
-// const filters = generateFilters();
-
-  // Код ниже -> Рабочий код, если потребуется в фильтре 'ALL' отобразить количество всех задач
-  /*
-  const filterMarkup = filters.map((filter, i) => {
-    if (i === 0) {
-      const valueAllTasks = filters.map((it) => it.count).reduce((acc, currentValue) => acc + currentValue);
-      filter.count = valueAllTasks - filters[0].count;
-      return createFiltersMarkup(filter, true);
-    } return createFiltersMarkup(filter);
-  }).join(`\n`);
-  */
-  const filterMarkup = filters.map((filter, i) => createFiltersMarkup(filter, i === 0)).join(`\n`);
+  const filterMarkup = filters.map((filter, i) => createFilterMarkup(filter, i === 0)).join(`\n`);
 
   return (
     `

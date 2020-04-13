@@ -16,6 +16,7 @@ const siteControlElement = siteMainElement.querySelector(`.main__control`);
 
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
+
 const readerTemplateElement = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -26,7 +27,7 @@ readerTemplateElement(siteMainElement, createBoardTemplate());
 const siteBoardElement = document.querySelector(`.board`);
 const siteBoardTaskElement = siteBoardElement.querySelector(`.board__tasks`);
 readerTemplateElement(siteBoardElement, createSortTemplate(), `afterbegin`);
-readerTemplateElement(siteBoardTaskElement, createFormEditTemplate());
+readerTemplateElement(siteBoardTaskElement, createFormEditTemplate(tasks[1]));
 
 const showingTasksCount = MAX_TASK_VIEW;
 
