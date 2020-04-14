@@ -6,25 +6,31 @@ import {createFormEditTemplate} from './components/form-edit';
 import {createTaskTemplate} from './components/task';
 import {createButtonLoad} from './components/button-load';
 
-const MAX_TASK_VIEW = 3;
+import {generateFilters} from './mock/filters';
+import {generateTasks} from './mock/task';
+
+const TASK_COUNT = 20;
+const MAX_TASK_VIEW = 8;
 const siteMainElement = document.querySelector(`main`);
 const siteControlElement = siteMainElement.querySelector(`.main__control`);
 
+const filters = generateFilters();
+const tasks = generateTasks(TASK_COUNT);
 
 const readerTemplateElement = (container, template, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template);
 };
 
 readerTemplateElement(siteControlElement, createMenuTemplate());
-readerTemplateElement(siteMainElement, createFilterTemplate());
+readerTemplateElement(siteMainElement, createFilterTemplate(filters));
 readerTemplateElement(siteMainElement, createBoardTemplate());
 const siteBoardElement = document.querySelector(`.board`);
 const siteBoardTaskElement = siteBoardElement.querySelector(`.board__tasks`);
 readerTemplateElement(siteBoardElement, createSortTemplate(), `afterbegin`);
-readerTemplateElement(siteBoardTaskElement, createFormEditTemplate());
+readerTemplateElement(siteBoardTaskElement, createFormEditTemplate(tasks[1]));
 
-for (let i = 0; i < MAX_TASK_VIEW; i++) {
-  readerTemplateElement(siteBoardTaskElement, createTaskTemplate());
-}
+const showingTasksCount = MAX_TASK_VIEW;
+
+tasks.slice(1, showingTasksCount).forEach((task) => readerTemplateElement(siteBoardTaskElement, createTaskTemplate(task)));
 
 readerTemplateElement(siteBoardElement, createButtonLoad());
