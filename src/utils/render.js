@@ -10,7 +10,7 @@ const createElement = (elementMarkup) => {
   return element.firstChild;
 };
 
-const readerTemplateElement = (container, component, place = `beforeend`) => {
+const readerElement = (container, component, place = `beforeend`) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(component.getElement());
@@ -21,4 +21,4 @@ const readerTemplateElement = (container, component, place = `beforeend`) => {
   }
 };
 
-export {createElement, readerTemplateElement};
+export {createElement, readerElement};

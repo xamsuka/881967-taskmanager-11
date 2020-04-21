@@ -1,11 +1,12 @@
-import {createMenuTemplate} from './components/menu';
-import {createBoardTemplate, BoardComponent} from './components/board';
-import {createFilterTemplate} from './components/filters';
-import {createSortTemplate} from './components/sorting';
-import {createFormEditTemplate} from './components/form-edit';
-import {createTaskTemplate, TaskComponent} from './components/task';
-import {createButtonLoad} from './components/button-load';
-import {readerTemplateElement} from './utils/render';
+import MenuComponent from './components/menu';
+import Filters from './components/filters';
+import BoardComponent from './components/board';
+import BoardsComponent from './components/boards';
+import SortComponent from './components/sorting';
+import FormEditTaskComponent from './components/form-edit';
+import TaskComponent from './components/task';
+import LoadButtonComponent from './components/button-load';
+import {readerElement} from './utils/render';
 
 import {generateFilters} from './mock/filters';
 import {generateTasks} from './mock/task';
@@ -18,20 +19,16 @@ const siteControlElement = siteMainElement.querySelector(`.main__control`);
 const filters = generateFilters();
 const tasks = generateTasks(TASK_COUNT);
 
-const boardComponent = new BoardComponent();
-const readerTemplateElement2 = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-readerTemplateElement2(siteControlElement, createMenuTemplate());
-readerTemplateElement2(siteMainElement, createFilterTemplate(filters));
-readerTemplateElement(siteMainElement, boardComponent);
-// const siteBoardElement = document.querySelector(`.board`);
-// const siteBoardTaskElement = siteBoardElement.querySelector(`.board__tasks`);
-// readerTemplateElement(siteBoardElement, createSortTemplate(), `afterbegin`);
-// readerTemplateElement(siteBoardTaskElement, createFormEditTemplate(tasks[1]));
+readerElement(siteControlElement, new MenuComponent());
+readerElement(siteMainElement, new Filters(filters));
+readerElement(siteMainElement, new BoardComponent());
+const siteBoardElement = siteMainElement.querySelector(`.board`);
+readerElement(siteBoardElement, new BoardsComponent());
+const siteBoardTaskElement = siteBoardElement.querySelector(`.board__tasks`);
+readerElement(siteBoardElement, new SortComponent(), `afterbegin`);
+readerElement(siteBoardTaskElement, new FormEditTaskComponent(tasks[1]));
 
 const showingTasksCount = MAX_TASK_VIEW;
-// tasks.slice(1, showingTasksCount).forEach((task) => readerTemplateElement(siteMainElement, new TaskComponent(task)));
+tasks.slice(1, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, new TaskComponent(task)));
 
-// readerTemplateElement(siteBoardElement, createButtonLoad());
+readerElement(siteBoardElement, new LoadButtonComponent());
