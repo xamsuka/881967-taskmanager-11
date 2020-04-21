@@ -1,7 +1,7 @@
 import {DAYS} from '../const';
 import {COLORS} from '../const';
 import {MONTH_NAMES} from '../const';
-import {formateTime} from '../util';
+import {formateTime} from '../utils/common';
 
 const createRepeatingDaysMarkup = (task, repeatingDays) => {
   const repeatingMarkup = DAYS.map((day) => {

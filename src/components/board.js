@@ -1,3 +1,5 @@
+import {createElement} from '../utils/render';
+
 const createBoardTemplate = () => {
   return (
     `<section class="board container">
@@ -7,4 +9,26 @@ const createBoardTemplate = () => {
   );
 };
 
-export {createBoardTemplate};
+class BoardComponent {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createBoardTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export {createBoardTemplate, BoardComponent};

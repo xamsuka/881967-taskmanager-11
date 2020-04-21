@@ -1,5 +1,5 @@
 import {COLORS} from '../const';
-import {getRandomValue, gettingRandomBooleanValue} from '../util';
+import {getRandomValue, gettingRandomBooleanValue} from '../utils/common';
 
 const descriptions = [`Изучить теорию`, `Сделать домашку`, `Пройти интенсив на соточку`];
 
