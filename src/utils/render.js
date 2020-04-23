@@ -21,4 +21,11 @@ const readerElement = (container, component, place = `beforeend`) => {
   }
 };
 
-export {createElement, readerElement};
+const replace = (newComponent, oldComponent) => {
+  const parentElement = newComponent.getElement().parentElement;
+  const newChild = newComponent.getElement();
+  const oldChild = oldComponent.getElement();
+  parentElement.replaceChild(oldChild, newChild);
+};
+
+export {createElement, readerElement, replace};

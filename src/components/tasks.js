@@ -1,11 +1,11 @@
 import AbstractComponents from './abstract-components';
 
-const createBoardsMarkup = () => {
+const createTasksMarkup = () => {
   return (`<div class="board__tasks"></div>`);
 };
 
-export default class Boards extends AbstractComponents {
+export default class Tasks extends AbstractComponents {
   getTemplate() {
-    return createBoardsMarkup();
+    return createTasksMarkup();
   }
 }

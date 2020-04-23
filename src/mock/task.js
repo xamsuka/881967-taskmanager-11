@@ -6,7 +6,7 @@ const descriptions = [`Изучить теорию`, `Сделать домаш�
 const generateRepeatingDays = () => {
   return {
     mo: gettingRandomBooleanValue(),
-    tu: false,
+    tu: true,
     we: false,
     th: gettingRandomBooleanValue(),
     fr: false,
