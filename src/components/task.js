@@ -1,5 +1,6 @@
 import {MONTH_NAMES} from '../const';
-import {formateTime} from '../util';
+import {formateTime} from '../utils/common';
+import AbstractComponent from './abstract-components';
 
 const createTaskTemplate = (task) => {
   const {description, dueDate, repeatingDays, color, isFavorite, isArchive} = task;
@@ -14,8 +15,7 @@ const createTaskTemplate = (task) => {
   const date = isShowing ? `${dueDate.getDate()} ` + Array.from(MONTH_NAMES)[dueDate.getMonth()] : ``;
   const time = isShowing ? formateTime(dueDate) : ``;
 
-  return (
-    `<article class="card card--${color} ${repeating} ${classDeadline}">
+  return (`<article class="card card--${color} ${repeating} ${classDeadline}">
       <div class="card__form">
       <div class="card__inner">
       <div class="card__control">
@@ -54,8 +54,16 @@ const createTaskTemplate = (task) => {
       </div>
     </div>
       </div>
-  </article>`
-  );
+  </article>`);
 };
 
-export {createTaskTemplate};
+export default class Task extends AbstractComponent {
+  constructor(task) {
+    super();
+    this._task = task;
+  }
+
+  getTemplate() {
+    return createTaskTemplate(this._task);
+  }
+}

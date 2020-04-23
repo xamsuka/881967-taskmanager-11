@@ -1,7 +1,8 @@
 import {DAYS} from '../const';
 import {COLORS} from '../const';
 import {MONTH_NAMES} from '../const';
-import {formateTime} from '../util';
+import {formateTime} from '../utils/common';
+import TaskComponent from './task';
 
 const createRepeatingDaysMarkup = (task, repeatingDays) => {
   const repeatingMarkup = DAYS.map((day) => {
@@ -16,11 +17,9 @@ const createRepeatingDaysMarkup = (task, repeatingDays) => {
 
 const createColorsMarkup = (colors, colorTask) => {
   const colorsMarkup = COLORS.map((color) => {
-    return (`
-    <input type="radio" id="color-${color}-4" class="card__color-input card__color-input--${color} visually-hidden" name="color"
+    return (`<input type="radio" id="color-${color}-4" class="card__color-input card__color-input--${color} visually-hidden" name="color"
   value="${color}" ${colorTask === color ? `checked` : ``}/>
-    <label for="color-${color}-4" class="card__color card__color--${color}">${color}</label>
-    `);
+    <label for="color-${color}-4" class="card__color card__color--${color}">${color}</label>`);
   }).join(``);
 
   return colorsMarkup;
@@ -42,8 +41,7 @@ const createFormEditTemplate = (task) => {
   const repeatingDaysMarkup = isRepeating ? createRepeatingDaysMarkup(task, repeatingDays) : ``;
   const colorsMarkup = createColorsMarkup(COLORS, color);
 
-  return (
-    `<article class="card card--edit card--${color} ${repeating} ${classDeadline}">
+  return (`<article class="card card--edit card--${color} ${repeating} ${classDeadline}">
     <form class="card__form" method="get">
       <div class="card__inner">
         <div class="card__color-bar">
@@ -107,8 +105,11 @@ const createFormEditTemplate = (task) => {
         </div>
       </div>
     </form>
-  </article>`
-  );
+  </article>`);
 };
 
-export {createFormEditTemplate};
+export default class FormEditTask extends TaskComponent {
+  getTemplate() {
+    return createFormEditTemplate(this._task);
+  }
+}
