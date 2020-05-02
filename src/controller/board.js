@@ -5,7 +5,7 @@ import FormEditTaskComponent from '../components/form-edit';
 import SortComponent from '../components/sorting';
 import TaskComponent from '../components/task';
 import TasksComponent from '../components/tasks';
-import {readerElement, replace} from '../utils/render';
+import {readerElement, replace, remove} from '../utils/render';
 
 import Utils from '../utils/common';
 
@@ -32,25 +32,18 @@ export default class BoardController {
       UtilsComponent.isEscPress(evt, closeEditWayPoin);
     };
 
-    const mountedTask = (taskComponent, taskEditComponent) => {
-      const buttonEdit = taskComponent.getElement().querySelector(`.card__btn--edit`);
-      const buttonSave = taskEditComponent.getElement().querySelector(`.card__form`);
-
-      buttonEdit.addEventListener(`click`, () => {
-        replace(taskComponent, taskEditComponent);
-        document.addEventListener(`keydown`, onEscKeyDown);
-      });
-
-      buttonSave.addEventListener(`submit`, (evt) => {
-        evt.preventDefault();
-        replace(taskEditComponent, taskComponent);
-      });
-    };
-
     const taskComponent = new TaskComponent(task);
     const taskEditComponent = new FormEditTaskComponent(task);
 
-    mountedTask(taskComponent, taskEditComponent);
+    taskComponent.setEditButtonClick(() => {
+      replace(taskComponent, taskEditComponent);
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+
+    taskEditComponent.setButtonSaveClick((evt) => {
+      evt.preventDefault();
+      replace(taskEditComponent, taskComponent);
+    });
 
     return taskComponent;
   }
@@ -66,15 +59,6 @@ export default class BoardController {
       readerElement(this._container, boardNoComponent);
       return;
     } else {
-      const onButtonLoadClick = (evt) => {
-        const target = evt.target;
-        const prevTaskCount = showingTasksCount;
-        showingTasksCount += INCREMENT_TASK_ON_NUMBER;
-        tasks.slice(prevTaskCount, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, this.renderTask(task)));
-        if (showingTasksCount >= tasks.length) {
-          target.remove();
-        }
-      };
 
       readerElement(this._container, this._boardComponent);
       const siteBoardElement = this._container.querySelector(`.board`);
@@ -87,7 +71,15 @@ export default class BoardController {
       tasks.slice(0, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, this.renderTask(task)));
 
       readerElement(siteBoardElement, this._loadButtonComponent);
-      this._loadButtonComponent.getElement().addEventListener(`click`, onButtonLoadClick);
+
+      this._loadButtonComponent.setButtonLoadClick(() => {
+        const prevTaskCount = showingTasksCount;
+        showingTasksCount += INCREMENT_TASK_ON_NUMBER;
+        tasks.slice(prevTaskCount, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, this.renderTask(task)));
+        if (showingTasksCount >= tasks.length) {
+          remove(this._loadButtonComponent);
+        }
+      });
     }
   }
 }

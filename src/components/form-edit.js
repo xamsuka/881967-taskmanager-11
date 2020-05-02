@@ -1,8 +1,8 @@
+import TaskComponent from './task';
 import {DAYS} from '../const';
 import {COLORS} from '../const';
 import {MONTH_NAMES} from '../const';
 import {formateTime} from '../utils/common';
-import TaskComponent from './task';
 
 const createRepeatingDaysMarkup = (task, repeatingDays) => {
   const repeatingMarkup = DAYS.map((day) => {
@@ -111,5 +111,11 @@ const createFormEditTemplate = (task) => {
 export default class FormEditTask extends TaskComponent {
   getTemplate() {
     return createFormEditTemplate(this._task);
+  }
+
+  setButtonSaveClick(handler) {
+    const taskEditElement = this.getElement();
+    const buttonSaveElement = taskEditElement.querySelector(`.card__form`);
+    buttonSaveElement.addEventListener(`submit`, handler);
   }
 }
