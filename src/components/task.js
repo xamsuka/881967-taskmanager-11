@@ -7,8 +7,6 @@ const createTaskTemplate = (task) => {
   const repeating = repeatingDays === null ? `` : `card--repeat`;
   const isExpired = dueDate < Date.now();
   const isShowing = !!dueDate;
-
-
   const classDeadline = isExpired && isShowing ? `card--deadline` : ``;
   const classArchive = isArchive ? `card__btn--disabled` : ``;
   const classFavorite = isFavorite ? `card__btn--disabled` : ``;
@@ -65,5 +63,11 @@ export default class Task extends AbstractComponent {
 
   getTemplate() {
     return createTaskTemplate(this._task);
+  }
+
+  setEditButtonClick(handler) {
+    const taskElement = this.getElement();
+    const buttonEditElement = taskElement.querySelector(`.card__btn--edit`);
+    buttonEditElement.addEventListener(`click`, handler);
   }
 }
