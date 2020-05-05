@@ -2,7 +2,7 @@ import BoardNoTaskComponent from '../components/board-no-task';
 import BoardComponent from '../components/board';
 import LoadButtonComponent from '../components/button-load';
 import FormEditTaskComponent from '../components/form-edit';
-import SortComponent from '../components/sorting';
+import SortComponent, {SortType} from '../components/sorting';
 import TaskComponent from '../components/task';
 import TasksComponent from '../components/tasks';
 import {readerElement, replace, remove} from '../utils/render';
@@ -19,7 +19,28 @@ export default class BoardController {
     this._loadButtonComponent = new LoadButtonComponent();
   }
 
-  renderTask(task) {
+  _sortingTasks(tasks, sortType, from, to) {
+    let sortedTasks = [];
+    const sortingTasks = tasks.slice();
+
+    switch (sortType) {
+      case SortType.DEFAULT:
+        sortedTasks = sortingTasks;
+        break;
+      case SortType.DATE_UP:
+        sortedTasks = sortingTasks.sort((a, b) => a.dueDate - b.dueDate);
+        break;
+      case SortType.DATE_DOWN:
+        sortedTasks = sortingTasks.sort((a, b) => b.dueDate - a.dueDate);
+        break;
+      default:
+        sortedTasks = sortingTasks;
+    }
+
+    return sortedTasks.slice(from, to);
+  }
+
+  _renderTask(task) {
 
     const closeEditWayPoin = () => {
       const buttonSave = document.querySelector(`.card__save`);
@@ -54,31 +75,48 @@ export default class BoardController {
     let showingTasksCount = SHOWUNG_TASK_COUNT_START;
     const isAllArhive = Object.keys(tasks).length === 0;
 
+    const renderLoadMoreButton = () => {
+      if (showingTasksCount >= tasks.length) {
+        return;
+      }
+
+      readerElement(this._boardComponent.getElement(), this._loadButtonComponent);
+
+      this._loadButtonComponent.setButtonLoadClick(() => {
+        const prevTaskCount = showingTasksCount;
+        showingTasksCount += INCREMENT_TASK_ON_NUMBER;
+        const sortedTasks = this._sortingTasks(tasks, this._sortComponent._currentSortType, prevTaskCount, showingTasksCount);
+        sortedTasks.forEach((task) => readerElement(this._tasksComponent.getElement(), this._renderTask(task)));
+        if (showingTasksCount >= tasks.length) {
+          remove(this._loadButtonComponent);
+        }
+      });
+    };
+
     if (isAllArhive) {
       const boardNoComponent = new BoardNoTaskComponent();
       readerElement(this._container, boardNoComponent);
       return;
     } else {
+      const siteBoardElement = this._boardComponent.getElement();
+      const siteBoardTaskElement = this._tasksComponent.getElement();
 
       readerElement(this._container, this._boardComponent);
-      const siteBoardElement = this._container.querySelector(`.board`);
-
       readerElement(siteBoardElement, this._sortComponent);
       readerElement(siteBoardElement, this._tasksComponent);
 
-      const siteBoardTaskElement = siteBoardElement.querySelector(`.board__tasks`);
+      tasks.slice(0, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, this._renderTask(task)));
+      renderLoadMoreButton();
 
-      tasks.slice(0, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, this.renderTask(task)));
+      this._sortComponent.setSortTypeClick((sortType) => {
+        showingTasksCount = SHOWUNG_TASK_COUNT_START;
+        const sortedTasks = this._sortingTasks(tasks, sortType, 0, SHOWUNG_TASK_COUNT_START);
+        const taskListElement = this._tasksComponent.getElement();
+        taskListElement.innerHTML = ``;
 
-      readerElement(siteBoardElement, this._loadButtonComponent);
+        this.render(sortedTasks);
 
-      this._loadButtonComponent.setButtonLoadClick(() => {
-        const prevTaskCount = showingTasksCount;
-        showingTasksCount += INCREMENT_TASK_ON_NUMBER;
-        tasks.slice(prevTaskCount, showingTasksCount).forEach((task) => readerElement(siteBoardTaskElement, this.renderTask(task)));
-        if (showingTasksCount >= tasks.length) {
-          remove(this._loadButtonComponent);
-        }
+        renderLoadMoreButton();
       });
     }
   }
